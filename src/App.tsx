@@ -32,6 +32,25 @@ import {
 import { ChecklistItem, Team } from "./services/supabase";
 //import mapaLocal from "./imports/MapaExpedicaoSementeira.png";
 
+// ── Mapas por equipe ──────────────────────────────────────────────────────────
+// Mapeamento de IDs de equipe para URLs de mapas (Canva)
+const MAPAS_POR_EQUIPE: Record<string, string> = {
+  // Exemplo com os IDs que você já tem no Supabase
+  "team-1":
+    "https://www.canva.com/design/DAHTCiFcW2Q/4WeY8dlvuE9Wpj4nxZQV4A/view?embed",
+  "team-2":
+    "https://www.canva.com/design/DAHTCnJBvxA/inSm-LPTRwTdVEo3YFnX-Q/view?embed",
+  "team-3":
+    "https://www.canva.com/design/DAHTCl7m39o/exFUPb_GeKEZG7xdWrcuXQ/view?embed",
+  "team-4":
+    "https://www.canva.com/design/DAHTCh0bDV4/rAj0FBBc-Banx9Pm60JybQ/view?embed",
+  // Adicione mais equipes aqui conforme forem criadas
+};
+
+// Mapa padrão (fallback) para equipes sem mapa específico
+const MAPA_PADRAO =
+  "https://www.canva.com/design/DAHTCh0bDV4/rAj0FBBc-Banx9Pm60JybQ/view?embed";
+
 function useAppState() {
   const [state, setState] = useState(getState());
 
@@ -1028,7 +1047,7 @@ function TeamDetailPage({
               scrollSnapAlign: "start",
             }}
           >
-            {/* Map 
+            {/* Map da maquina local - antigo código que usava a imagem local do mapa
             <img
               src={mapaLocal}
               alt={`Mapa da área — ${team.name}`}
@@ -1040,7 +1059,7 @@ function TeamDetailPage({
               }}
             />*/}
 
-            {/* DEPOIS - novo código com o iframe do Canva */}
+            {/* Mapa - usando o mapeamento por equipe */}
             <div
               style={{
                 position: "relative",
@@ -1060,7 +1079,7 @@ function TeamDetailPage({
                   left: 0,
                   border: "none",
                 }}
-                src="https://www.canva.com/design/DAHS4Jiwh1w/-CUSir4d3w-ZOJkt8aRs5g/view?embed"
+                src={MAPAS_POR_EQUIPE[team.id] || MAPA_PADRAO}
                 allowFullScreen
                 allow="fullscreen"
                 title={`Mapa Canva - ${team.name}`}
