@@ -49,7 +49,7 @@ const MAPAS_POR_EQUIPE: Record<string, string> = {
 
 // Mapa padrão (fallback) para equipes sem mapa específico
 const MAPA_PADRAO =
-  "https://www.canva.com/design/DAHTCh0bDV4/rAj0FBBc-Banx9Pm60JybQ/view?embed";
+  "https://www.canva.com/design/DAHS4Jiwh1w/-CUSir4d3w-ZOJkt8aRs5g/view?embed";
 
 function useAppState() {
   const [state, setState] = useState(getState());

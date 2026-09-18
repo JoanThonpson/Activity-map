@@ -24,4 +24,6 @@ export interface ChecklistItem {
   label: string
   checked: boolean
   checked_at: string | null
+  created_at?: string;
+  position?: number; // ← NOVO CAMPO
 }

@@ -33,7 +33,7 @@ async function loadState() {
     const { data: items, error: itemsError } = await supabase
       .from('checklist_items')
       .select('*')
-      .order('label')
+      .order('position', { ascending: true });
 
     if (itemsError) throw itemsError
 
@@ -133,27 +133,36 @@ export async function editTeam(id: string, name: string, description: string, lo
 }
 
 export async function addItem(teamId: string, label: string): Promise<ChecklistItem> {
-  const id = `i-${Date.now()}`
+  const id = `i-${Date.now()}`;
+
+  // Calcula a próxima posição (maior position existente + 1)
+  const itemsFromTeam = _state.items.filter(i => i.team_id === teamId);
+  const maxPosition = itemsFromTeam.length > 0
+    ? Math.max(...itemsFromTeam.map(i => i.position ?? 0))
+    : -1;
+
   const newItem: ChecklistItem = {
     id,
     team_id: teamId,
     label,
     checked: false,
-    checked_at: null
-  }
+    checked_at: null,
+    created_at: new Date().toISOString(),
+    position: maxPosition + 1, // ← NOVO
+  };
 
   const { error } = await supabase
     .from('checklist_items')
-    .insert([newItem])
+    .insert([newItem]);
 
-  if (error) throw error
+  if (error) throw error;
 
   _state = {
     ..._state,
     items: [..._state.items, newItem]
-  }
-  notify()
-  return newItem
+  };
+  notify();
+  return newItem;
 }
 
 export async function removeItem(id: string): Promise<void> {
