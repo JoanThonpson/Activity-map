@@ -25,5 +25,5 @@ export interface ChecklistItem {
   checked: boolean
   checked_at: string | null
   created_at?: string;
-  position?: number; // ← NOVO CAMPO
+  position?: number; // Posição do item na lista de verificação
 }
